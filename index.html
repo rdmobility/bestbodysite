@@ -1,0 +1,1295 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Best Body Clinic — Medicina Integrativa de Longevidade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --bg: hsl(0,0%,99%);
+      --fg: hsl(0,0%,8%);
+      --card: hsl(0,0%,100%);
+      --muted: hsl(0,0%,52%);
+      --border: hsl(0,0%,91%);
+      --secondary: hsl(0,0%,96%);
+      --accent: hsl(0,0%,93%);
+      --radius: 0.75rem;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal[data-delay="1"] { transition-delay: 0.08s; }
+    .reveal[data-delay="2"] { transition-delay: 0.16s; }
+    .reveal[data-delay="3"] { transition-delay: 0.24s; }
+    .reveal[data-delay="4"] { transition-delay: 0.32s; }
+    .reveal[data-delay="5"] { transition-delay: 0.40s; }
+    .reveal[data-delay="6"] { transition-delay: 0.48s; }
+    .reveal[data-delay="7"] { transition-delay: 0.56s; }
+    .reveal[data-delay="8"] { transition-delay: 0.64s; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+    .container-md { max-width: 48rem; margin: 0 auto; padding: 0 1.5rem; }
+    .container-sm { max-width: 36rem; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background 0.5s, border-color 0.5s, box-shadow 0.5s;
+    }
+    #navbar.scrolled {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 1px 12px rgba(0,0,0,0.04);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 4rem; padding: 0 1.5rem; max-width: 72rem; margin: 0 auto;
+    }
+    @media(min-width:768px){ .nav-inner { height: 5rem; padding: 0 2.5rem; } }
+
+    .nav-logo { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; }
+    .nav-logo img { height: 2.25rem; width: auto; object-fit: contain; }
+    .nav-logo span { font-family: var(--font-sans); font-weight: 500; font-size: 1rem; letter-spacing: -0.02em; color: var(--fg); }
+    @media(max-width:479px){ .nav-logo span { display: none; } }
+
+    .nav-links { display: none; gap: 2rem; align-items: center; }
+    @media(min-width:768px){ .nav-links { display: flex; } }
+    .nav-links a {
+      font-family: var(--font-sans); font-size: 0.875rem; text-decoration: none;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--fg); font-weight: 500; }
+
+    .nav-cta {
+      display: none;
+      font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500;
+      padding: 0.625rem 1.25rem; border-radius: 9999px;
+      background: var(--fg); color: var(--bg);
+      text-decoration: none; transition: background 0.2s;
+    }
+    .nav-cta:hover { background: rgba(20,20,20,0.85); }
+    @media(min-width:768px){ .nav-cta { display: inline-flex; align-items: center; } }
+
+    .hamburger { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0.25rem; color: var(--fg); }
+    @media(min-width:768px){ .hamburger { display: none; } }
+
+    .mobile-menu {
+      display: none; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu-inner { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+    .mobile-menu a {
+      font-family: var(--font-sans); font-size: 1rem; text-decoration: none; color: var(--muted);
+    }
+    .mobile-menu a:hover, .mobile-menu a.active { color: var(--fg); font-weight: 500; }
+    .mobile-menu-cta {
+      display: block; text-align: center; font-family: var(--font-sans); font-size: 0.875rem;
+      font-weight: 500; padding: 0.75rem; border-radius: 9999px;
+      background: var(--fg); color: var(--bg); text-decoration: none; margin-top: 0.5rem;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #fff 0%, hsl(0,0%,96%) 50%, #fff 100%);
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      background: rgba(0,0,0,0.04); filter: blur(80px);
+      pointer-events: none;
+      animation: pulse 12s ease-in-out infinite;
+    }
+    .hero-orb-1 { width: 600px; height: 600px; top: 33%; left: 25%; transform: translate(-50%,-50%); animation-delay: 0s; }
+    .hero-orb-2 { width: 500px; height: 500px; bottom: 33%; right: 25%; animation-duration: 15s; animation-delay: 3s; opacity: 0.7; }
+    @keyframes pulse {
+      0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.06; }
+      50% { transform: translate(-50%,-50%) scale(1.06); opacity: 0.1; }
+    }
+    .hero-orb-2 { animation: pulse2 15s ease-in-out infinite 3s; }
+    @keyframes pulse2 {
+      0%,100% { opacity: 0.04; transform: scale(1); }
+      50% { opacity: 0.08; transform: scale(1.08); }
+    }
+
+    .hero-inner { position: relative; z-index: 10; text-align: center; padding: 0 1.5rem; max-width: 56rem; margin: 0 auto; }
+    .hero-eyebrow {
+      font-family: var(--font-sans); font-size: 0.6875rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 2.5rem;
+      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+    }
+    .hero-title {
+      font-family: var(--font-serif); font-weight: 300;
+      font-size: clamp(2.8rem, 8vw, 5.125rem);
+      color: var(--fg); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 2rem;
+      animation: fadeUp 1.1s cubic-bezier(0.16,1,0.3,1) 0.25s both;
+    }
+    .hero-title em { font-style: italic; color: rgba(20,20,20,0.6); }
+    .hero-sub {
+      font-family: var(--font-sans); font-weight: 300;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted); max-width: 32rem; margin: 0 auto 3.5rem;
+      line-height: 1.7;
+      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.5s both;
+    }
+    .hero-btns {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      align-items: center; justify-content: center;
+      animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.75s both;
+    }
+    @media(min-width:480px){ .hero-btns { flex-direction: row; } }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500;
+      padding: 0.875rem 1.75rem; border-radius: 9999px;
+      background: var(--fg); color: var(--bg); text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover { background: rgba(20,20,20,0.85); transform: translateY(-1px); }
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(2px); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center;
+      font-family: var(--font-sans); font-size: 0.875rem;
+      padding: 0.875rem 1.75rem; border-radius: 9999px;
+      border: 1px solid rgba(0,0,0,0.1); color: var(--muted);
+      background: rgba(255,255,255,0.6); text-decoration: none;
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .btn-secondary:hover { border-color: rgba(0,0,0,0.2); color: var(--fg); background: rgba(255,255,255,0.9); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      animation: scrollBounce 2.5s ease-in-out infinite;
+    }
+    .hero-scroll-line { width: 1px; height: 2.5rem; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2), transparent); }
+    @keyframes scrollBounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION GENERIC ── */
+    section { overflow: hidden; }
+    .section-eyebrow {
+      font-family: var(--font-sans); font-size: 0.6875rem;
+      text-transform: uppercase; letter-spacing: 0.22em; color: var(--muted); margin-bottom: 1.25rem;
+    }
+    .section-title {
+      font-family: var(--font-serif); font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3.125rem); color: var(--fg); line-height: 1.1;
+    }
+    .section-sub {
+      font-family: var(--font-sans); font-weight: 300; font-size: 1rem;
+      color: var(--muted); line-height: 1.7; margin-top: 1.25rem;
+    }
+    .divider { border: none; border-top: 1px solid rgba(0,0,0,0.06); }
+
+    /* ── DOCTOR ── */
+    #doctor { padding: 7rem 1.5rem; background: #fff; }
+    @media(min-width:768px){ #doctor { padding: 10rem 2.5rem; } }
+    .doctor-grid { display: grid; grid-template-columns: 1fr; gap: 4rem; align-items: center; }
+    @media(min-width:1024px){ .doctor-grid { grid-template-columns: 1fr 1fr; gap: 6rem; } }
+
+    .doctor-photo-wrap { position: relative; }
+    .doctor-photo {
+      aspect-ratio: 3/4; max-width: 28rem; margin: 0 auto;
+      overflow: hidden; border-radius: 1rem; background: var(--secondary);
+    }
+    @media(min-width:1024px){ .doctor-photo { margin: 0; } }
+    .doctor-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+    .doctor-badge {
+      position: absolute; bottom: -1.25rem; right: -1rem;
+      background: #fff; border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 1rem; padding: 1rem 1.25rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    @media(min-width:768px){ .doctor-badge { right: 0; } }
+    .doctor-badge p { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.25rem; }
+    .doctor-badge span { display: block; font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500; color: var(--fg); }
+
+    .doctor-text { padding-top: 1rem; }
+    .doctor-quote { font-family: var(--font-serif); font-weight: 300; font-style: italic; font-size: clamp(1.1rem, 2.5vw, 1.375rem); color: rgba(20,20,20,0.7); line-height: 1.6; margin-bottom: 1.5rem; }
+    .doctor-desc { font-family: var(--font-sans); font-weight: 300; font-size: 0.875rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+    .doctor-specs { border-left: 2px solid rgba(0,0,0,0.08); padding-left: 1.25rem; margin: 2.5rem 0; }
+    .doctor-specs p { font-family: var(--font-sans); font-size: 0.75rem; color: rgba(20,20,20,0.6); font-weight: 300; margin-bottom: 0.5rem; }
+    .doctor-ig { display: inline-flex; align-items: center; gap: 0.625rem; font-family: var(--font-sans); font-size: 0.875rem; color: var(--fg); text-decoration: none; transition: color 0.2s; }
+    .doctor-ig:hover { color: var(--muted); }
+
+    /* ── BENEFITS ── */
+    #benefits { padding: 7rem 1.5rem; background: #fff; }
+    @media(min-width:768px){ #benefits { padding: 10rem 2.5rem; } }
+    .benefits-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 0; outline: 1px solid rgba(0,0,0,0.06);
+    }
+    @media(min-width:640px){ .benefits-grid { grid-template-columns: 1fr 1fr; } }
+    @media(min-width:1024px){ .benefits-grid { grid-template-columns: repeat(4,1fr); } }
+
+    .benefit-item {
+      padding: 2.5rem; background: #fff;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: background 0.5s;
+    }
+    .benefit-item:hover { background: var(--secondary); }
+    .benefit-icon { width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+    .benefit-icon svg { color: rgba(20,20,20,0.3); transition: color 0.5s; }
+    .benefit-item:hover .benefit-icon svg { color: rgba(20,20,20,0.6); }
+    .benefit-title { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); margin-bottom: 0.5rem; }
+    .benefit-desc { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+    /* ── SYMPTOMS ── */
+    #symptoms { padding: 7rem 1.5rem; background: var(--secondary); }
+    @media(min-width:768px){ #symptoms { padding: 10rem 2.5rem; } }
+    .symptoms-grid {
+      display: grid; grid-template-columns: 1fr;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    @media(min-width:768px){ .symptoms-grid { grid-template-columns: 1fr 1fr; } }
+
+    .symptom-item {
+      display: flex; align-items: flex-start; gap: 1.5rem;
+      padding: 2rem 2.5rem; background: #fff;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: background 0.3s;
+    }
+    .symptom-item:hover { background: rgba(0,0,0,0.01); }
+    @media(min-width:768px){
+      .symptom-item:nth-child(odd) { border-right: 1px solid rgba(0,0,0,0.06); }
+      .symptom-item:nth-last-child(-n+2) { border-bottom: none; }
+    }
+    @media(max-width:767px){ .symptom-item:last-child { border-bottom: none; } }
+    .symptom-n { font-family: var(--font-sans); font-size: 0.6875rem; color: rgba(20,20,20,0.3); letter-spacing: 0.15em; flex-shrink: 0; padding-top: 0.125rem; }
+    .symptom-title { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); margin-bottom: 0.375rem; }
+    .symptom-desc { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+    /* ── WE TREAT ── */
+    #wetreat { padding: 7rem 1.5rem; background: #fff; }
+    @media(min-width:768px){ #wetreat { padding: 10rem 2.5rem; } }
+    .wetreat-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media(min-width:768px){ .wetreat-grid { grid-template-columns: 1fr 1fr; } }
+    .wetreat-item { display: flex; align-items: flex-start; gap: 1.25rem; }
+    .wetreat-n { font-family: var(--font-sans); font-size: 0.625rem; color: rgba(20,20,20,0.3); letter-spacing: 0.15em; margin-top: 0.25rem; width: 1.5rem; flex-shrink: 0; }
+    .wetreat-body { border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1rem; flex: 1; }
+    .wetreat-title { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); margin-bottom: 0.375rem; }
+    .wetreat-desc { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+    .link-arrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-sans); font-size: 0.875rem; color: var(--fg);
+      text-decoration: none; transition: color 0.2s;
+      margin-top: 1rem;
+    }
+    .link-arrow svg { transition: transform 0.2s; }
+    .link-arrow:hover { color: var(--muted); }
+    .link-arrow:hover svg { transform: translateX(2px); }
+
+    /* ── HOW IT WORKS ── */
+    #howitworks { padding: 7rem 1.5rem; background: rgba(0,0,0,0.02); }
+    @media(min-width:768px){ #howitworks { padding: 10rem 2.5rem; } }
+    .steps-grid { display: grid; grid-template-columns: 1fr; }
+    @media(min-width:768px){ .steps-grid { grid-template-columns: repeat(4,1fr); } }
+    .step-item { padding: 2rem 2.5rem; }
+    @media(min-width:768px){ .step-item:not(:last-child) { border-right: 1px solid rgba(0,0,0,0.06); } }
+    .step-n { font-family: var(--font-sans); font-size: 2rem; font-weight: 300; color: rgba(20,20,20,0.08); margin-bottom: 1.5rem; letter-spacing: -0.04em; }
+    .step-title { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); margin-bottom: 0.5rem; }
+    .step-desc { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+    /* ── PROTOCOLS ── */
+    #protocols { padding: 7rem 1.5rem; background: #fff; }
+    @media(min-width:768px){ #protocols { padding: 10rem 2.5rem; } }
+    .protocols-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media(min-width:1024px){ .protocols-grid { grid-template-columns: repeat(3,1fr); } }
+
+    .protocol-card {
+      display: flex; flex-direction: column;
+      border: 1px solid rgba(0,0,0,0.07); border-radius: 1rem;
+      padding: 2.5rem; background: #fff;
+      transition: box-shadow 0.5s;
+    }
+    .protocol-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.04); }
+    .protocol-label { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.75rem; }
+    .protocol-name { font-family: var(--font-serif); font-weight: 300; font-size: 1.5rem; color: var(--fg); margin-bottom: 0.75rem; }
+    .protocol-desc { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); line-height: 1.7; font-weight: 300; margin-bottom: 1.5rem; }
+    .protocol-dur { display: flex; align-items: center; gap: 0.375rem; font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .protocol-benefits-label { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.75rem; }
+    .protocol-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .protocol-badge { font-family: var(--font-sans); font-size: 0.6875rem; padding: 0.375rem 0.75rem; border-radius: 9999px; background: var(--secondary); color: rgba(20,20,20,0.7); }
+    .protocol-footer { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.06); }
+    .protocol-included-label { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.75rem; }
+    .protocol-included-item { display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.5rem; }
+    .protocol-check { width: 0.75rem; height: 0.75rem; flex-shrink: 0; color: rgba(20,20,20,0.25); }
+    .protocol-included-item span { font-family: var(--font-sans); font-size: 0.75rem; color: rgba(20,20,20,0.55); font-weight: 300; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { padding: 7rem 1.5rem; background: #fff; }
+    @media(min-width:768px){ #testimonials { padding: 10rem 2.5rem; } }
+    .testi-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media(min-width:768px){ .testi-grid { grid-template-columns: repeat(3,1fr); } }
+    .testi-card { border: 1px solid rgba(0,0,0,0.07); border-radius: 1rem; padding: 2.5rem; background: var(--secondary); }
+    .testi-text { font-family: var(--font-serif); font-weight: 300; font-style: italic; font-size: 1.125rem; color: rgba(20,20,20,0.7); line-height: 1.7; margin-bottom: 2rem; }
+    .testi-footer { border-top: 1px solid rgba(0,0,0,0.07); padding-top: 1.25rem; }
+    .testi-name { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); }
+    .testi-role { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); margin-top: 0.125rem; }
+
+    /* ── CTA ── */
+    #cta { padding: 7rem 1.5rem; background: var(--fg); }
+    @media(min-width:768px){ #cta { padding: 10rem 2.5rem; } }
+    .cta-inner { text-align: center; max-width: 48rem; margin: 0 auto; }
+    .cta-eyebrow { font-family: var(--font-sans); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.28em; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+    .cta-title { font-family: var(--font-serif); font-weight: 300; font-size: clamp(2rem,5vw,3.75rem); color: #fff; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 2rem; }
+    .cta-title em { font-style: italic; color: rgba(255,255,255,0.5); }
+    .cta-sub { font-family: var(--font-sans); font-weight: 300; font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 28rem; margin: 0 auto 3rem; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 0.625rem;
+      font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500;
+      padding: 1rem 2rem; border-radius: 9999px;
+      background: #fff; color: var(--fg); text-decoration: none;
+      transition: background 0.3s;
+    }
+    .btn-white:hover { background: rgba(255,255,255,0.9); }
+    .btn-white svg { transition: transform 0.2s; }
+    .btn-white:hover svg { transform: translateX(2px); }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid rgba(0,0,0,0.06); background: var(--secondary); }
+    .footer-inner { max-width: 72rem; margin: 0 auto; padding: 4rem 1.5rem 2rem; }
+    @media(min-width:768px){ .footer-inner { padding: 5rem 2.5rem 2rem; } }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-bottom: 3.5rem; }
+    @media(min-width:768px){ .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+    .footer-brand img { height: 3rem; width: auto; object-fit: contain; margin-bottom: 0.75rem; }
+    .footer-brand p { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); line-height: 1.6; max-width: 11rem; }
+    .footer-col-title { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.22em; color: var(--muted); margin-bottom: 1rem; }
+    .footer-col { display: flex; flex-direction: column; gap: 0.625rem; }
+    .footer-col a, .footer-col span { font-family: var(--font-sans); font-size: 0.75rem; color: rgba(20,20,20,0.6); text-decoration: none; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--fg); }
+    .footer-bottom { border-top: 1px solid rgba(0,0,0,0.06); padding-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; align-items: center; }
+    @media(min-width:640px){ .footer-bottom { flex-direction: row; justify-content: space-between; } }
+    .footer-copy { font-family: var(--font-sans); font-size: 0.6875rem; color: var(--muted); }
+    .footer-legal { display: flex; gap: 1.25rem; }
+    .footer-legal span { font-family: var(--font-sans); font-size: 0.6875rem; color: var(--muted); cursor: pointer; transition: color 0.2s; }
+    .footer-legal span:hover { color: var(--fg); }
+
+    /* ── PAGE VIEWS ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── PAGE HEADER ── */
+    .page-header { text-align: center; max-width: 40rem; margin: 0 auto 5rem; }
+    .page-header.left { text-align: left; }
+    .page-header .eyebrow { font-family: var(--font-sans); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.22em; color: var(--muted); margin-bottom: 1.25rem; }
+    .page-header h1 { font-family: var(--font-serif); font-weight: 300; font-size: clamp(2.25rem, 5vw, 3.75rem); color: var(--fg); line-height: 1.1; margin-bottom: 1.25rem; }
+    .page-header .subtitle { font-family: var(--font-sans); font-size: 1rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+    /* ── VITAMINAS PAGE ── */
+    #page-vitaminas { padding-top: 8rem; padding-bottom: 6rem; background: #fff; }
+    .vitaminas-list { }
+    .vitamina-row {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;
+      padding: 2.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+      cursor: pointer; transition: padding-left 0.5s;
+    }
+    .vitamina-row:hover { padding-left: 0.5rem; }
+    .vitamina-row-label { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.5rem; }
+    .vitamina-row-name { font-family: var(--font-serif); font-weight: 300; font-size: clamp(1.375rem, 3vw, 1.875rem); color: var(--fg); margin-bottom: 0.5rem; }
+    .vitamina-row-tag { font-family: var(--font-sans); font-size: 0.875rem; color: var(--muted); font-weight: 300; max-width: 28rem; }
+    .vitamina-arrow { flex-shrink: 0; color: var(--muted); margin-top: 0.25rem; transition: color 0.2s, transform 0.2s; }
+    .vitamina-row:hover .vitamina-arrow { color: var(--fg); transform: translateX(2px); }
+
+    /* ── VITAMINA DETAIL ── */
+    #page-vitamina-detail { padding-top: 6rem; padding-bottom: 6rem; }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--muted); background: none; border: none; cursor: pointer;
+      transition: color 0.2s; margin-bottom: 3.5rem; padding: 0;
+    }
+    .back-btn:hover { color: var(--fg); }
+    .vitamina-detail-sections { }
+    .vitamina-section-row { border-top: 1px solid rgba(0,0,0,0.06); padding: 2.5rem 0; }
+    .vitamina-section-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media(min-width:768px){ .vitamina-section-grid { grid-template-columns: 12.5rem 1fr; gap: 1.5rem; } }
+    .vitamina-section-title { font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500; color: rgba(20,20,20,0.5); text-transform: uppercase; letter-spacing: 0.15em; }
+    .vitamina-section-content { font-family: var(--font-sans); font-size: 0.875rem; color: rgba(20,20,20,0.8); line-height: 1.8; font-weight: 300; white-space: pre-line; }
+
+    /* ── PROTOCOLOS PAGE ── */
+    #page-protocolos { padding-top: 8rem; padding-bottom: 6rem; padding-left: 1.5rem; padding-right: 1.5rem; background: #fff; }
+    .protocolos-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media(min-width:1024px){ .protocolos-grid { grid-template-columns: 1fr 1fr; } }
+
+    /* ── CONDICOES PAGE ── */
+    #page-condicoes { padding-top: 8rem; padding-bottom: 6rem; padding-left: 1.5rem; padding-right: 1.5rem; background: #fff; }
+    .condicoes-list { }
+    .condicao-row { border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .condicao-btn {
+      width: 100%; text-align: left; padding: 2rem 0;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;
+      background: none; border: none; cursor: pointer;
+    }
+    .condicao-btn-left { flex: 1; }
+    .condicao-title { font-family: var(--font-serif); font-weight: 300; font-size: 1.25rem; color: var(--fg); margin-bottom: 0.375rem; transition: color 0.2s; }
+    .condicao-btn:hover .condicao-title { color: rgba(20,20,20,0.7); }
+    .condicao-short { font-family: var(--font-sans); font-size: 0.875rem; color: var(--muted); font-weight: 300; }
+    .condicao-chevron { flex-shrink: 0; color: var(--muted); margin-top: 0.375rem; transition: transform 0.3s; }
+    .condicao-chevron.open { transform: rotate(180deg); }
+    .condicao-body {
+      display: none; padding-bottom: 2rem;
+      display: grid; grid-template-columns: 1fr; gap: 2rem;
+      overflow: hidden; max-height: 0; transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1), padding 0.4s;
+      padding-bottom: 0;
+    }
+    @media(min-width:768px){ .condicao-body { grid-template-columns: 1fr 17.5rem; } }
+    .condicao-body.open { max-height: 600px; padding-bottom: 2rem; }
+    .condicao-detail { font-family: var(--font-sans); font-size: 0.875rem; color: rgba(20,20,20,0.7); line-height: 1.8; font-weight: 300; }
+    .condicao-symptoms-label { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.75rem; }
+    .condicao-symptom { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .condicao-symptom-dot { width: 0.25rem; height: 0.25rem; border-radius: 50%; background: rgba(20,20,20,0.2); flex-shrink: 0; }
+    .condicao-symptom span { font-family: var(--font-sans); font-size: 0.75rem; color: rgba(20,20,20,0.6); font-weight: 300; }
+
+    /* ── CONTATO PAGE ── */
+    #page-contato { padding-top: 8rem; padding-bottom: 6rem; padding-left: 1.5rem; padding-right: 1.5rem; background: #fff; }
+    .contato-header-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center; margin-bottom: 5rem; }
+    @media(min-width:1024px){ .contato-header-grid { grid-template-columns: 17.5rem 1fr; gap: 3rem; } }
+    .contato-photo { border-radius: 1rem; overflow: hidden; aspect-ratio: 3/4; max-width: 13.75rem; margin: 0 auto; }
+    @media(min-width:1024px){ .contato-photo { margin: 0; } }
+    .contato-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+    .contato-reviews {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(0,0,0,0.07);
+      background: rgba(0,0,0,0.015); margin-bottom: 4rem; cursor: pointer;
+      text-decoration: none; transition: background 0.3s;
+    }
+    .contato-reviews:hover { background: rgba(0,0,0,0.03); }
+    .contato-reviews-stars { display: flex; gap: 0.125rem; margin-right: 1rem; }
+    .star { width: 1rem; height: 1rem; fill: rgba(20,20,20,0.7); }
+    .contato-reviews-text p:first-child { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500; color: var(--fg); }
+    .contato-reviews-text p:last-child { font-family: var(--font-sans); font-size: 0.75rem; color: var(--muted); font-weight: 300; }
+
+    .contato-grid { display: grid; grid-template-columns: 1fr; gap: 4rem; }
+    @media(min-width:1024px){ .contato-grid { grid-template-columns: 1fr 18.75rem; } }
+
+    .form-group { margin-bottom: 1.75rem; }
+    .form-label { display: block; font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.625rem; }
+    .form-input, .form-textarea {
+      width: 100%; font-family: var(--font-sans); font-size: 0.875rem; font-weight: 300;
+      padding: 0.875rem 1rem; border-radius: 0.75rem;
+      border: 1px solid rgba(0,0,0,0.08); background: rgba(0,0,0,0.02);
+      color: var(--fg); transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: rgba(0,0,0,0.25); box-shadow: 0 0 0 3px rgba(0,0,0,0.04); }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); opacity: 0.7; }
+    .form-textarea { resize: none; min-height: 8rem; }
+
+    .form-row { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 1.75rem; }
+    @media(min-width:480px){ .form-row { grid-template-columns: 1fr 1fr; } }
+
+    .form-btns { display: flex; flex-direction: column; gap: 0.75rem; }
+    @media(min-width:480px){ .form-btns { flex-direction: row; } }
+
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-sans); font-size: 0.875rem; font-weight: 500;
+      padding: 0.875rem 1.75rem; border-radius: 9999px;
+      border: 1px solid rgba(0,0,0,0.1); color: var(--fg); text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-wa:hover { background: var(--secondary); }
+
+    .contato-info-item { padding: 1.5rem 0; }
+    .contato-info-item:not(:last-child) { border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .contato-info-row { display: flex; align-items: flex-start; gap: 1rem; }
+    .contato-info-icon { color: var(--muted); flex-shrink: 0; margin-top: 0.125rem; }
+    .contato-info-label { font-family: var(--font-sans); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.25rem; }
+    .contato-info-value { font-family: var(--font-sans); font-size: 0.875rem; color: rgba(20,20,20,0.7); font-weight: 300; white-space: pre-line; line-height: 1.6; }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(4rem);
+      background: var(--fg); color: var(--bg); border-radius: 9999px;
+      padding: 0.875rem 1.5rem; font-family: var(--font-sans); font-size: 0.875rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s;
+      opacity: 0; z-index: 200; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ICONS (inline SVG helpers) */
+    svg { display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ NAVBAR ══════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" onclick="navigate('home');return false;">
+      <img src="https://media.base44.com/images/public/69ca6e76b69d321a2ad6afbc/b9ac7bbb7_LOGOBESTBODY.jpg" alt="Best Body" />
+      <span>Best Body</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#" onclick="navigate('home');return false;" data-page="home">Início</a>
+      <a href="#" onclick="navigate('condicoes');return false;" data-page="condicoes">O Que Tratamos</a>
+      <a href="#" onclick="navigate('protocolos');return false;" data-page="protocolos">Protocolos</a>
+      <a href="#" onclick="navigate('vitaminas');return false;" data-page="vitaminas">Vitaminas</a>
+      <a href="#" onclick="navigate('contato');return false;" data-page="contato">Contato</a>
+    </nav>
+
+    <a class="nav-cta" href="#" onclick="navigate('contato');return false;">Agendar Consulta</a>
+
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <svg id="icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="icon-x" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <a href="#" onclick="navigate('home');toggleMenu();return false;" data-page="home">Início</a>
+      <a href="#" onclick="navigate('condicoes');toggleMenu();return false;" data-page="condicoes">O Que Tratamos</a>
+      <a href="#" onclick="navigate('protocolos');toggleMenu();return false;" data-page="protocolos">Protocolos</a>
+      <a href="#" onclick="navigate('vitaminas');toggleMenu();return false;" data-page="vitaminas">Vitaminas</a>
+      <a href="#" onclick="navigate('contato');toggleMenu();return false;" data-page="contato">Contato</a>
+      <a class="mobile-menu-cta" href="#" onclick="navigate('contato');toggleMenu();return false;">Agendar Consulta</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════ HOME PAGE ══════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Medicina Integrativa de Longevidade</p>
+      <h1 class="hero-title">Viva mais.<br><em>Sinta-se extraordinário.</em></h1>
+      <p class="hero-sub">Protocolos personalizados de saúde desenvolvidos para otimizar sua vitalidade, restaurar o equilíbrio e revelar seu pleno potencial.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#" onclick="navigate('contato');return false;">
+          Iniciar Jornada
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn-secondary" href="#" onclick="navigate('protocolos');return false;">Ver Protocolos</a>
+      </div>
+    </div>
+    <div class="hero-scroll"><div class="hero-scroll-line"></div></div>
+  </section>
+
+  <!-- DOCTOR -->
+  <section id="doctor">
+    <div class="container">
+      <div class="doctor-grid">
+        <div class="reveal doctor-photo-wrap">
+          <div class="doctor-photo">
+            <img src="https://media.base44.com/images/public/69ca6e76b69d321a2ad6afbc/a0eb80c5f_KAL_6722.jpg" alt="Dr. Rogério" />
+          </div>
+          <div class="doctor-badge">
+            <p>Registro Médico</p>
+            <span>CRMSC 15395</span>
+            <span>CRMPR 25418</span>
+          </div>
+        </div>
+        <div class="reveal doctor-text" data-delay="2">
+          <p class="section-eyebrow">O Especialista</p>
+          <h2 class="section-title" style="font-size:clamp(2rem,4vw,3rem);">Dr. Rogério</h2>
+          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--muted);margin-bottom:2rem;">Medicina e Nutrição Personalizada</p>
+          <p class="doctor-quote">"Estratégias calculadas para quem busca qualidade de vida."</p>
+          <p class="doctor-desc">Com profunda formação em medicina integrativa e longevidade, o Dr. Rogério combina diagnósticos de precisão com protocolos individualizados para entregar resultados reais e duradouros. Cada consulta é tratada como única — porque cada paciente é único.</p>
+          <p class="doctor-desc">Especialista em otimização hormonal, performance cognitiva, saúde metabólica e medicina preventiva, atua com foco total na causa raiz dos desequilíbrios — não apenas no controle de sintomas.</p>
+          <div class="doctor-specs">
+            <p>Medicina Integrativa e Funcional</p>
+            <p>Otimização Hormonal Bioidêntica</p>
+            <p>Longevidade e Anti-Envelhecimento</p>
+            <p>Nutrição Clínica e Personalizada</p>
+          </div>
+          <a class="doctor-ig" href="https://www.instagram.com/medicinabestbody" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @medicinabestbody
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section id="benefits">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:36rem;margin:0 auto 5rem;">
+        <p class="section-eyebrow">Os Resultados</p>
+        <h2 class="section-title">O que você vai conquistar</h2>
+      </div>
+      <div class="benefits-grid" id="benefits-grid"></div>
+    </div>
+  </section>
+
+  <!-- SYMPTOMS -->
+  <section id="symptoms">
+    <div class="container">
+      <div class="reveal" style="max-width:36rem;margin-bottom:5rem;">
+        <p class="section-eyebrow">Reconhece isso?</p>
+        <h2 class="section-title">Sinais que o seu corpo<br>está pedindo ajuda</h2>
+      </div>
+      <div class="symptoms-grid" id="symptoms-grid"></div>
+    </div>
+  </section>
+
+  <!-- WE TREAT -->
+  <section id="wetreat">
+    <div class="container">
+      <div class="reveal" style="max-width:36rem;margin-bottom:5rem;">
+        <p class="section-eyebrow">O Que Tratamos</p>
+        <h2 class="section-title">Condições que<br>transformamos</h2>
+      </div>
+      <div class="wetreat-grid" id="wetreat-grid"></div>
+      <div class="reveal" style="margin-top:4rem;" data-delay="3">
+        <a class="link-arrow" href="#" onclick="navigate('condicoes');return false;">
+          Ver todas as condições
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="howitworks">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:36rem;margin:0 auto 5rem;">
+        <p class="section-eyebrow">O Processo</p>
+        <h2 class="section-title">Como funciona</h2>
+      </div>
+      <div class="steps-grid" id="steps-grid"></div>
+    </div>
+  </section>
+
+  <!-- PROTOCOLS PREVIEW -->
+  <section id="protocols">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:36rem;margin:0 auto 5rem;">
+        <p class="section-eyebrow">Programas</p>
+        <h2 class="section-title">Protocolos em destaque</h2>
+      </div>
+      <div class="protocols-grid" id="protocols-preview-grid"></div>
+      <div class="reveal" style="text-align:center;margin-top:3.5rem;">
+        <a class="link-arrow" style="justify-content:center;" href="#" onclick="navigate('protocolos');return false;">
+          Ver todos os protocolos
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:36rem;margin:0 auto 5rem;">
+        <p class="section-eyebrow">Depoimentos</p>
+        <h2 class="section-title">Histórias de transformação</h2>
+      </div>
+      <div class="testi-grid" id="testi-grid"></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="cta-inner reveal">
+      <p class="cta-eyebrow">Comece Hoje</p>
+      <h2 class="cta-title">Comece sua jornada<br><em>de longevidade</em></h2>
+      <p class="cta-sub">Agende uma consulta gratuita com nossa equipe e descubra como a medicina integrativa personalizada pode transformar sua saúde.</p>
+      <a class="btn-white" href="#" onclick="navigate('contato');return false;">
+        Agendar Consulta Gratuita
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </section>
+
+</div><!-- /page-home -->
+
+
+<!-- ══════════════════ VITAMINAS PAGE ══════════════════ -->
+<div id="page-vitaminas" class="page">
+  <div id="vitaminas-list-view" style="padding-top:8rem;padding-bottom:6rem;padding-left:1.5rem;padding-right:1.5rem;background:#fff;">
+    <div class="container-md">
+      <div class="reveal" style="margin-bottom:5rem;">
+        <p class="section-eyebrow">Biblioteca Clínica</p>
+        <h1 class="section-title" style="font-size:clamp(2.25rem,5vw,3.75rem);margin-bottom:1.25rem;">Vitaminas Essenciais</h1>
+        <p class="section-sub" style="max-width:28rem;">Conteúdo clínico aprofundado sobre os nutrientes mais relevantes para a sua saúde e longevidade.</p>
+      </div>
+      <hr class="divider" />
+      <div id="vitaminas-rows"></div>
+    </div>
+  </div>
+
+  <div id="vitamina-detail-view" style="display:none;padding-top:6rem;padding-bottom:6rem;padding-left:1.5rem;padding-right:1.5rem;">
+    <div class="container-md">
+      <button class="back-btn" onclick="showVitaminasList()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Voltar
+      </button>
+      <p class="section-eyebrow" id="vd-eyebrow">Vitaminas</p>
+      <h1 class="section-title" id="vd-name" style="font-size:clamp(2.25rem,5vw,3.75rem);margin-bottom:1.25rem;"></h1>
+      <p class="section-sub" id="vd-tagline" style="max-width:36rem;margin-bottom:2.5rem;"></p>
+      <hr class="divider" style="margin-bottom:2.5rem;" />
+      <p id="vd-intro" style="font-family:var(--font-sans);font-size:0.875rem;color:rgba(20,20,20,0.7);line-height:1.8;font-weight:300;margin-bottom:4rem;max-width:48rem;"></p>
+      <div id="vd-sections"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════ PROTOCOLOS PAGE ══════════════════ -->
+<div id="page-protocolos" class="page">
+  <div style="padding-top:8rem;padding-bottom:6rem;padding-left:1.5rem;padding-right:1.5rem;background:#fff;">
+    <div class="container">
+      <div class="reveal" style="text-align:center;max-width:40rem;margin:0 auto 5rem;">
+        <p class="section-eyebrow">Programas Clínicos</p>
+        <h1 class="section-title" style="font-size:clamp(2.25rem,5vw,3.75rem);margin-bottom:1.25rem;">Protocolos de Tratamento</h1>
+        <p class="section-sub">Cada protocolo é uma combinação cuidadosamente elaborada de diagnósticos, terapias e orientações de estilo de vida, projetada para entregar resultados transformadores.</p>
+      </div>
+      <div class="protocolos-grid" id="protocolos-full-grid"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════ CONDICOES PAGE ══════════════════ -->
+<div id="page-condicoes" class="page">
+  <div style="padding-top:8rem;padding-bottom:6rem;padding-left:1.5rem;padding-right:1.5rem;background:#fff;">
+    <div class="container-md" style="max-width:56rem;">
+      <div class="reveal page-header" style="margin-bottom:4rem;">
+        <p class="eyebrow">Especialidades</p>
+        <h1>O que tratamos</h1>
+        <p class="subtitle">Medicina integrativa orientada à causa raiz para desafios complexos de saúde. Clique em qualquer condição para conhecer nossa abordagem.</p>
+      </div>
+      <div class="condicoes-list" id="condicoes-list"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════ CONTATO PAGE ══════════════════ -->
+<div id="page-contato" class="page">
+  <div id="page-contato" style="padding-top:8rem;padding-bottom:6rem;padding-left:1.5rem;padding-right:1.5rem;background:#fff;">
+    <div class="container" style="max-width:64rem;">
+
+      <!-- Header with photo -->
+      <div class="contato-header-grid reveal">
+        <div class="contato-photo">
+          <img src="https://media.base44.com/images/public/69ca6e76b69d321a2ad6afbc/355631196_KAL_6747.jpg" alt="Dr. Rogério" />
+        </div>
+        <div>
+          <p class="section-eyebrow">Contato</p>
+          <h1 class="section-title" style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;">Inicie sua<br><em style="font-style:italic;color:rgba(20,20,20,0.5)">transformação</em></h1>
+          <p style="font-family:var(--font-sans);font-size:0.875rem;color:var(--muted);font-weight:300;line-height:1.7;max-width:28rem;margin-bottom:1.25rem;">Agende sua consulta com o Dr. Rogério e descubra um protocolo personalizado para a sua saúde.</p>
+          <a class="doctor-ig" href="https://www.instagram.com/medicinabestbody" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @medicinabestbody
+          </a>
+        </div>
+      </div>
+
+      <hr class="divider" style="margin-bottom:4rem;" />
+
+      <!-- Reviews banner -->
+      <a class="contato-reviews reveal" href="https://www.google.com/search?q=medicina+best+body" target="_blank" rel="noopener">
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <div class="contato-reviews-stars">
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="contato-reviews-text">
+            <p>Avaliações no Google</p>
+            <p>Veja o que nossos pacientes dizem sobre a Best Body</p>
+          </div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--muted);flex-shrink:0;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+
+      <!-- Form + Info grid -->
+      <div class="contato-grid reveal">
+        <form id="contact-form" onsubmit="handleContactSubmit(event)">
+          <div class="form-row">
+            <div>
+              <label class="form-label">Nome completo</label>
+              <input type="text" class="form-input" placeholder="Seu nome" required />
+            </div>
+            <div>
+              <label class="form-label">E-mail</label>
+              <input type="email" class="form-input" placeholder="seu@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telefone / WhatsApp</label>
+            <input type="tel" class="form-input" placeholder="(47) 99999-9999" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mensagem</label>
+            <textarea class="form-textarea" placeholder="Conte-nos sobre seus objetivos de saúde..." rows="5"></textarea>
+          </div>
+          <div class="form-btns">
+            <button type="submit" class="btn-primary">
+              Enviar mensagem
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <a class="btn-wa" href="https://wa.me/554735123555?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Rogério%20na%20Best%20Body." target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              WhatsApp
+            </a>
+          </div>
+        </form>
+
+        <div>
+          <div class="contato-info-item">
+            <div class="contato-info-row">
+              <svg class="contato-info-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div>
+                <p class="contato-info-label">Endereço</p>
+                <p class="contato-info-value">Edifício Helbor Offices
+Rua Henrique Meyer, 280 — 15º andar, sala 1505
+Centro, Joinville — SC, 89201-405</p>
+              </div>
+            </div>
+          </div>
+          <div class="contato-info-item">
+            <div class="contato-info-row">
+              <svg class="contato-info-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <p class="contato-info-label">Telefone</p>
+                <p class="contato-info-value">(47) 3512-3555</p>
+              </div>
+            </div>
+          </div>
+          <div class="contato-info-item">
+            <div class="contato-info-row">
+              <svg class="contato-info-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <div>
+                <p class="contato-info-label">Horário</p>
+                <p class="contato-info-value">Segunda a Sexta: 8h às 20h
+Aberto agora</p>
+              </div>
+            </div>
+          </div>
+          <div class="contato-info-item" style="border-bottom:none;">
+            <a href="https://maps.google.com/?q=Rua+Henrique+Meyer+280+Joinville+SC" target="_blank" rel="noopener" class="link-arrow" style="font-size:0.75rem;margin-top:0;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Ver no Google Maps
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <p style="font-family:var(--font-sans);font-size:0.6875rem;color:rgba(20,20,20,0.4);margin-top:0.375rem;font-weight:300;">~10 min do centro</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ FOOTER (shared) ══════════════════ -->
+<footer id="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="https://media.base44.com/images/public/69ca6e76b69d321a2ad6afbc/b9ac7bbb7_LOGOBESTBODY.jpg" alt="Best Body" />
+        <p>Medicina e Nutrição Personalizada — Joinville, SC.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Navegar</p>
+        <div class="footer-col">
+          <a href="#" onclick="navigate('home');return false;">Início</a>
+          <a href="#" onclick="navigate('vitaminas');return false;">Vitaminas</a>
+          <a href="#" onclick="navigate('protocolos');return false;">Protocolos</a>
+          <a href="#" onclick="navigate('condicoes');return false;">O Que Tratamos</a>
+          <a href="#" onclick="navigate('contato');return false;">Contato</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-col-title">Tratamentos</p>
+        <div class="footer-col">
+          <span>Fadiga crônica</span>
+          <span>Equilíbrio hormonal</span>
+          <span>Terapia IV</span>
+          <span>Saúde intestinal</span>
+          <span>Neuro-performance</span>
+        </div>
+      </div>
+      <div>
+        <p class="footer-col-title">Contato</p>
+        <div class="footer-col">
+          <span>(47) 3512-3555</span>
+          <span>Joinville, SC</span>
+          <span>@medicinabestbody</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Best Body Clinic. Todos os direitos reservados.</p>
+      <div class="footer-legal">
+        <span>Privacidade</span>
+        <span>Termos</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+const benefitsData = [
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`, title: "Energia e Disposição", desc: "Vitalidade sustentada ao longo do dia, sem picos nem quedas bruscas de energia." },
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`, title: "Equilíbrio Hormonal", desc: "Perfis hormonais otimizados para bem-estar físico e emocional pleno." },
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`, title: "Clareza Mental e Foco", desc: "Cognição mais nítida, concentração elevada e memória fortalecida." },
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`, title: "Melhora do Sono", desc: "Ciclos de sono profundo e restaurador que regeneram corpo e mente." },
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`, title: "Imunidade Fortalecida", desc: "Sistema imunológico resiliente e preparado para defender o organismo." },
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg>`, title: "Saúde Celular", desc: "Rejuvenescimento celular para vitalidade e aparência jovial duradoura." },
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`, title: "Redução do Estresse", desc: "Cortisol equilibrado, mais calma e maior equilíbrio emocional diário." },
+  { icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`, title: "Bem-estar Integral", desc: "Uma sensação profunda de saúde que emana de dentro para fora." },
+];
+
+const symptomsData = [
+  { n:"01", title:"Fadiga Crônica", desc:"Exaustão persistente que o repouso não consegue resolver." },
+  { n:"02", title:"Cansaço Constante", desc:"Sensação contínua de depleção que compromete o desempenho." },
+  { n:"03", title:"Brain Fog", desc:"Dificuldade de concentração, lapsos de memória e névoa mental." },
+  { n:"04", title:"Ansiedade e Estresse", desc:"Tensão excessiva que perturba o equilíbrio e a produtividade." },
+  { n:"05", title:"Distúrbios do Sono", desc:"Dificuldade em adormecer ou permanecer dormindo, mesmo com cansaço." },
+  { n:"06", title:"Inflamações", desc:"Inflamação silenciosa que acelera o envelhecimento e as doenças." },
+  { n:"07", title:"Deficiências Nutricionais", desc:"Carências ocultas de vitaminas e minerais que minam a saúde." },
+  { n:"08", title:"Exaustão (Burnout)", desc:"Colapso físico e emocional decorrente do esforço contínuo." },
+];
+
+const weTreatData = [
+  { title:"Fadiga Crônica", desc:"Protocolos avançados para restaurar a função mitocondrial e eliminar a exaustão persistente." },
+  { title:"Desequilíbrio Hormonal", desc:"Otimização hormonal de precisão com terapias bioidênticas para homens e mulheres." },
+  { title:"Inflamação Crônica", desc:"Estratégias anti-inflamatórias direcionadas às vias intestinais, imunológicas e sistêmicas." },
+  { title:"Problemas Intestinais", desc:"Restauração completa do microbioma para digestão e absorção de nutrientes otimizadas." },
+  { title:"Baixa Imunidade", desc:"Fortalecimento imunológico com terapia IV, suplementação e protocolos de estilo de vida." },
+  { title:"Queda Cognitiva", desc:"Estratégias neuroprotetoras para preservar e ampliar a função cerebral e a memória." },
+  { title:"Estresse Crônico", desc:"Recuperação adrenal e reequilíbrio do sistema nervoso para resiliência sustentada." },
+  { title:"Desequilíbrios Metabólicos", desc:"Reset metabólico para controle de peso, sensibilidade à insulina e energia." },
+];
+
+const stepsData = [
+  { n:"01", title:"Exames Completos", desc:"Diagnóstico aprofundado com painéis de sangue, marcadores genéticos, análise do microbioma e avaliações biométricas." },
+  { n:"02", title:"Análise Individual", desc:"Nossos médicos analisam seus dados com frameworks integrativos para identificar as causas raízes." },
+  { n:"03", title:"Protocolos Personalizados", desc:"Um plano de tratamento sob medida combinando nutrição, suplementação, terapias e ajustes de estilo de vida." },
+  { n:"04", title:"Acompanhamento Contínuo", desc:"Monitoramento contínuo e ajustes de protocolo garantindo progresso constante em direção às suas metas." },
+];
+
+const protocolsData = [
+  { name:"Longevidade Elite", desc:"Nosso programa carro-chefe combinando diagnósticos avançados com terapias anti-envelhecimento de ponta.", duration:"12 semanas", benefits:["Rejuvenescimento celular","Suporte telomérico","Otimização metabólica"], included:["NAD+ Terapia IV","Peptídeos","Painel Nutrigenômico","Ozônio Terapia","Análise Completa de Sangue","Composição Corporal"] },
+  { name:"Harmonia Hormonal", desc:"Equilíbrio hormonal de precisão com terapias bioidênticas e medicina funcional para restaurar energia, vitalidade e bem-estar emocional.", duration:"8 semanas", benefits:["Libido restaurada","Humor estável","Composição corporal"], included:["BHRT Bioidêntico","Suporte Adrenal","Otimização da Tireoide","Infusões de Micronutrientes","Painel Hormonal DUTCH"] },
+  { name:"Pico Cognitivo", desc:"Protocolos neuroprotetores e de neuro-amplificação desenhados para maximizar foco, memória e performance mental.", duration:"10 semanas", benefits:["Foco elevado","Memória aprimorada","Neuroproteção"], included:["Peptídeos Cerebrais","Terapia Fosfolipídica","Stack Nootrópico","Neurofeedback","Teste Genético APOE"] },
+  { name:"Restauro Intestinal", desc:"Reabilitação completa do microbioma visando digestão, absorção de nutrientes, imunidade e o eixo intestino-cérebro.", duration:"8 semanas", benefits:["Digestão melhorada","Menos inflamação","Pele mais saudável"], included:["Análise Avançada de Fezes","Teste de SIBO","Probióticos Direcionados","Terapia com Glutamina","Plano Nutricional"] },
+  { name:"Reset Metabólico", desc:"Programa intensivo de otimização metabólica para sensibilidade à insulina, composição corporal e saúde cardiovascular.", duration:"10 semanas", benefits:["Controle glicêmico","Mais energia","Saúde cardíaca"], included:["Monitor de Glicose Contínuo","Painel Metabólico","Nutrição Personalizada","Prescrição de Exercício","Berberina Protocolo"] },
+  { name:"Escudo Imunológico", desc:"Fortalecimento abrangente do sistema imunológico unindo terapias IV, suplementação alvo e otimização do estilo de vida.", duration:"6 semanas", benefits:["Menos infecções","Recuperação mais rápida","Resiliência"], included:["Vitamina C IV Megadose","Zinco e Selênio","Cogumelos Medicinais","Avaliação Imunológica","Otimização do Sono"] },
+];
+
+const testiData = [
+  { name:"Ana C.", role:"Executiva, 46 anos", text:"Depois de anos com fadiga crônica e névoa mental, o programa de longevidade me devolveu a vida. Tenho mais energia aos 46 do que tinha aos 30." },
+  { name:"Rodrigo M.", role:"Empresário, 52 anos", text:"O protocolo de otimização hormonal foi transformador. Meu foco, energia e qualidade de sono melhoraram dramaticamente em poucas semanas." },
+  { name:"Dra. Fernanda L.", role:"Médica, 41 anos", text:"Como médica, valorizo o rigor científico que encontrei aqui. Os protocolos são baseados em evidências, personalizados e genuinamente eficazes." },
+];
+
+const condicoesData = [
+  { title:"Fadiga Crônica", short:"Exaustão persistente que o repouso não consegue resolver, impactando cada aspecto da vida.", detail:"A síndrome da fadiga crônica envolve um cansaço profundo que dura seis meses ou mais e não é explicado por uma condição médica subjacente. Nossa abordagem inclui suporte mitocondrial, otimização adrenal, reposição de nutrientes (B12, ferro, CoQ10, magnésio), restauração do sono e terapias IV direcionadas para restaurar a produção de energia celular.", symptoms:["Sono não reparador","Mal-estar pós-esforço","Comprometimento cognitivo","Dores musculares"] },
+  { title:"Desequilíbrio Hormonal", short:"Disrupção nos níveis hormonais causando sintomas físicos e emocionais generalizados.", detail:"Os desequilíbrios hormonais afetam tireoide, adrenais, hormônios sexuais e sinalização de insulina. Utilizamos painéis completos (teste DUTCH, tireoide completa, insulina/glicose) combinados com reposição hormonal bioidêntica, fitoterapia adaptogênica e protocolos de estilo de vida para restaurar os ritmos hormonais naturais.", symptoms:["Flutuações de peso","Oscilações de humor","Libido reduzida","Sensibilidade térmica"] },
+  { title:"Inflamação Crônica", short:"Inflamação sistêmica silenciosa impulsionando o envelhecimento, dor e doenças crônicas.", detail:"A inflamação crônica é o motor silencioso por trás das doenças cardiovasculares, neurodegeneração e autoimunidade. Nossos protocolos identificam gatilhos inflamatórios por meio de biomarcadores avançados (PCR-us, painéis de citocinas, razões de ômegas) e os abordam via nutrição anti-inflamatória, suplementação direcionada, ozônio terapia e restauração intestinal.", symptoms:["Dores articulares","Doenças frequentes","Condições de pele","Problemas digestivos"] },
+  { title:"Problemas Intestinais", short:"Desequilíbrios do microbioma afetando digestão, imunidade e saúde mental.", detail:"O intestino é a base da saúde. Disbiose, permeabilidade intestinal aumentada (leaky gut) e SIBO contribuem para inflamação, autoimunidade e transtornos de humor. Utilizamos análise abrangente de fezes, teste de sensibilidades alimentares e protocolos direcionados incluindo probióticos, prebióticos, terapia com glutamina e dietas de eliminação.", symptoms:["Inchaço","Sensibilidades alimentares","Digestão irregular","Brain fog"] },
+  { title:"Baixa Imunidade", short:"Um sistema imunológico enfraquecido deixando você vulnerável a infecções e doenças.", detail:"Infecções recorrentes sinalizam disfunção imunológica. Avaliamos marcadores imunológicos, status nutricional (vitamina D, zinco, vitamina C), infecções crônicas e carga de estresse. O tratamento inclui vitamina C IV em alta dose, peptídeos imunomoduladores, extratos de cogumelos e otimização do estilo de vida.", symptoms:["Resfriados frequentes","Cicatrização lenta","Infecções recorrentes","Fadiga"] },
+  { title:"Queda de Desempenho Cognitivo", short:"Perda progressiva de memória, foco e agudeza mental.", detail:"O declínio cognitivo pode começar décadas antes do diagnóstico. Nossos protocolos neuroprotetores incluem avaliação de marcadores inflamatórios, teste genético APOE, e tratamentos como terapia NAD+, infusões de fosfolipídios, stacks nootrópicos e treinamento de neurofeedback.", symptoms:["Lapsos de memória","Dificuldade de concentração","Dificuldade de encontrar palavras","Fadiga mental"] },
+  { title:"Estresse Crônico", short:"Disfunção do eixo HPA levando a burnout, ansiedade e perturbações hormonais.", detail:"O estresse crônico desregula os ritmos do cortisol, perturba o sono e acelera o envelhecimento. Medimos curvas de cortisol, razões de DHEA e níveis de neurotransmissores. O tratamento combina protocolos adaptogênicos, respiração consciente, suplementação direcionada e treinamento de resiliência ao estresse.", symptoms:["Fadiga matinal","Quedas de tarde","Ansiedade","Insônia"] },
+  { title:"Desequilíbrios Metabólicos", short:"Resistência à insulina, ganho de peso e disfunção metabólica.", detail:"A síndrome metabólica afeta mais de 30% dos adultos. Nossa abordagem inclui testes metabólicos avançados, monitorização contínua de glicose, planos nutricionais personalizados, suplementação direcionada (berberina, cromo, ácido alfa-lipóico) e protocolos de exercício otimizados para saúde metabólica.", symptoms:["Ganho de peso resistente","Compulsão por açúcar","Quedas de energia","Glicemia elevada"] },
+];
+
+const vitaminasData = [
+  {
+    id:"d3k2", name:"Vitamina D3 + K2",
+    tagline:"O duo essencial para imunidade, saúde óssea e performance cardiovascular.",
+    intro:"A combinação de Vitamina D3 e K2 representa um dos avanços mais relevantes da nutrologia moderna. Enquanto a D3 amplia a absorção de cálcio e modula o sistema imunológico, a K2 direciona esse cálcio para os locais corretos — ossos e dentes — impedindo sua deposição nas artérias e tecidos moles.",
+    sections:[
+      { title:"O que é", content:"A Vitamina D3 (colecalciferol) é a forma biologicamente ativa da vitamina D produzida pela pele na presença de luz solar UVB. É classificada como hormônio esteroide devido à amplitude de suas ações no organismo. A Vitamina K2 (menaquinona) é um cofator lipossolúvel essencial para a ativação de proteínas dependentes de vitamina K, como a osteocalcina e a proteína MGP (Matrix Gla Protein)." },
+      { title:"Função biológica no organismo", content:"A D3 se liga a receptores nucleares (VDR) presentes em mais de 200 tipos celulares, regulando a expressão de centenas de genes. Ela modula a imunidade inata e adaptativa, a produção de insulina, a função muscular, o humor e a proteção neurológica. A K2, por sua vez, carboxila proteínas Gla que regulam onde o cálcio se deposita no corpo — garantindo mineralização óssea adequada e protegendo o sistema cardiovascular da calcificação arterial." },
+      { title:"Principais benefícios", content:"• Fortalecimento do sistema imunológico\n• Saúde óssea e prevenção de osteoporose\n• Proteção cardiovascular contra calcificação\n• Regulação do humor e prevenção de depressão sazonal\n• Suporte à função muscular e prevenção de quedas\n• Redução do risco de doenças autoimunes\n• Melhora da sensibilidade à insulina\n• Efeito anti-inflamatório sistêmico\n• Saúde periodontal e dos dentes" },
+      { title:"Sintomas de deficiência", content:"A deficiência de D3 é silenciosa e extremamente prevalente — estima-se que mais de 1 bilhão de pessoas no mundo sejam deficientes. Sinais incluem: fadiga persistente, dores musculares e ósseas, infecções frequentes, depressão e baixo humor, cabelo fraco, dificuldade de concentração, sudorese excessiva na nuca, cicatrização lenta e fraqueza muscular." },
+      { title:"Para quem é indicada", content:"Praticamente toda a população urbana moderna se beneficia desta combinação. Especialmente indicada para: pessoas com pouca exposição solar, trabalhadores de escritório, idosos, pacientes com doenças autoimunes, pessoas com síndrome metabólica ou diabetes, gestantes e lactantes, atletas e praticantes de atividade física intensa." },
+      { title:"Estratégia de suplementação", content:"Doses usuais de manutenção sem prescrição: D3 entre 2.000 e 5.000 UI/dia associada a K2 MK-7 entre 100 e 200 mcg/dia. Recomenda-se aferição dos níveis séricos de 25(OH)D antes e 3 meses após iniciar a suplementação para ajuste de dose. Nível alvo: 50–80 ng/mL." },
+    ]
+  },
+  {
+    id:"b12", name:"Vitamina B12",
+    tagline:"O pilar do sistema nervoso, da energia celular e da saúde hematológica.",
+    intro:"A vitamina B12 (cobalamina) é um micronutriente único — contém cobalto em sua estrutura e não pode ser sintetizada por plantas ou animais, apenas por microorganismos. É indispensável para a formação de glóbulos vermelhos, a mielina do sistema nervoso e centenas de reações metabólicas essenciais.",
+    sections:[
+      { title:"O que é", content:"A cobalamina é uma vitamina hidrossolúvel do complexo B que existe em múltiplas formas: cianocobalamina (forma sintética mais comum), metilcobalamina (forma ativa preferida), adenosilcobalamina (forma ativa mitocondrial) e hidroxocobalamina. As formas metil e adenosil são as biologicamente ativas e as mais eficientes para suplementação clínica." },
+      { title:"Principais benefícios", content:"• Produção de energia celular (via ciclo de Krebs mitocondrial)\n• Formação e proteção da bainha de mielina\n• Síntese de glóbulos vermelhos e prevenção de anemia megaloblástica\n• Regulação dos níveis de homocisteína (fator de risco cardiovascular)\n• Saúde cognitiva e prevenção do declínio neurológico\n• Síntese de serotonina, dopamina e outros neurotransmissores" },
+      { title:"Sintomas de deficiência", content:"A deficiência de B12 pode ser devastadora e é frequentemente subdiagnosticada. Manifestações incluem: fadiga intensa e fraqueza, formigamento e dormência nas extremidades, dificuldades cognitivas e memória, depressão e instabilidade emocional, glossite (língua inflamada e avermelhada), anemia megaloblástica." },
+      { title:"Para quem é indicada", content:"Grupos de alto risco: veganos e vegetarianos estritos (principal grupo de risco), idosos acima de 50 anos, usuários crônicos de metformina, usuários de inibidores de bomba de prótons (IBP), portadores de gastrite atrófica ou doença celíaca, portadores de polimorfismo MTHFR." },
+      { title:"Estratégia de suplementação", content:"Formas preferidas: metilcobalamina sublingual (500–1.000 mcg/dia) ou adenosilcobalamina para sintomas neurológicos. Em deficiência grave: 1.000–2.000 mcg/dia oral por 4–6 semanas, depois manutenção com 500–1.000 mcg/dia. Monitorar B12 sérica (alvo: acima de 400–500 pg/mL) e homocisteína." },
+    ]
+  },
+  {
+    id:"complexob", name:"Complexo B",
+    tagline:"A sinergia completa das vitaminas do grupo B para energia, neurologia e metabolismo.",
+    intro:"O complexo B reúne oito vitaminas hidrossolúveis — B1, B2, B3, B5, B6, B7, B9 e B12 — que trabalham em conjunto em praticamente todas as vias metabólicas do organismo. Sua sinergia é fundamental: deficiências em uma vitamina do grupo B frequentemente impactam a eficácia das demais.",
+    sections:[
+      { title:"O que é", content:"O Complexo B é composto por: B1 (tiamina), B2 (riboflavina), B3 (niacina), B5 (ácido pantotênico), B6 (piridoxina), B7 (biotina), B9 (folato/ácido fólico) e B12 (cobalamina). Todas são hidrossolúveis, não se acumulam no organismo em quantidades significativas e precisam de reposição regular através da alimentação ou suplementação." },
+      { title:"Principais benefícios", content:"• Produção e sustentação de energia celular\n• Saúde e proteção do sistema nervoso\n• Síntese de neurotransmissores e regulação do humor\n• Metabolismo eficiente de macronutrientes\n• Saúde da pele, cabelo e unhas (B7/Biotina)\n• Regulação dos níveis de homocisteína (B6, B9, B12)\n• Suporte ao ciclo de metilação e epigenética" },
+      { title:"Sintomas de deficiência", content:"Deficiências no complexo B manifestam-se de forma variada: B1 — beribéri, neuropatia periférica; B2 — queilite, dermatite; B3 — pelagra; B5 — fadiga adrenal; B6 — depressão, irritabilidade; B7 — queda de cabelo; B9 — anemia, defeitos congênitos; B12 — neuropatia, anemia, declínio cognitivo." },
+      { title:"Absorção e otimização", content:"As vitaminas do complexo B competem pelos mesmos transportadores intestinais. Formas ativas são superiores: metilfolato (5-MTHF) em vez de ácido fólico, metilcobalamina em vez de cianocobalamina, piridoxal-5-fosfato (P5P) em vez de piridoxina. Álcool, café em excesso e tabaco depletam significativamente as vitaminas B." },
+      { title:"Estratégia de suplementação", content:"Preferencialmente usar fórmulas ativadas/metiladas. Tomar pela manhã com alimentação para melhor absorção e tolerância gástrica. Monitorar homocisteína e MMA trimestralmente em uso contínuo." },
+    ]
+  },
+];
+
+// ══════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════
+function renderProtocolCard(p, i) {
+  return `
+    <div class="protocol-card reveal" data-delay="${i+1}">
+      <p class="protocol-label">Protocolo</p>
+      <h3 class="protocol-name">${p.name}</h3>
+      <p class="protocol-desc">${p.desc}</p>
+      <div class="protocol-dur">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        ${p.duration}
+      </div>
+      <div>
+        <p class="protocol-benefits-label">Benefícios</p>
+        <div class="protocol-badges">${p.benefits.map(b=>`<span class="protocol-badge">${b}</span>`).join('')}</div>
+      </div>
+      <div class="protocol-footer">
+        <p class="protocol-included-label">Incluído</p>
+        ${p.included.map(t=>`
+          <div class="protocol-included-item">
+            <svg class="protocol-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>${t}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+// Benefits
+document.getElementById('benefits-grid').innerHTML = benefitsData.map((item,i)=>`
+  <div class="benefit-item reveal" data-delay="${i+1}">
+    <div class="benefit-icon">${item.icon}</div>
+    <h3 class="benefit-title">${item.title}</h3>
+    <p class="benefit-desc">${item.desc}</p>
+  </div>`).join('');
+
+// Symptoms
+document.getElementById('symptoms-grid').innerHTML = symptomsData.map((item,i)=>`
+  <div class="symptom-item reveal" data-delay="${Math.min(i+1,8)}">
+    <span class="symptom-n">${item.n}</span>
+    <div>
+      <h3 class="symptom-title">${item.title}</h3>
+      <p class="symptom-desc">${item.desc}</p>
+    </div>
+  </div>`).join('');
+
+// We Treat
+document.getElementById('wetreat-grid').innerHTML = weTreatData.map((item,i)=>`
+  <div class="wetreat-item reveal" data-delay="${i+1}">
+    <span class="wetreat-n">${String(i+1).padStart(2,'0')}</span>
+    <div class="wetreat-body">
+      <h3 class="wetreat-title">${item.title}</h3>
+      <p class="wetreat-desc">${item.desc}</p>
+    </div>
+  </div>`).join('');
+
+// Steps
+document.getElementById('steps-grid').innerHTML = stepsData.map((s,i)=>`
+  <div class="step-item reveal" data-delay="${i+1}">
+    <p class="step-n">${s.n}</p>
+    <h3 class="step-title">${s.title}</h3>
+    <p class="step-desc">${s.desc}</p>
+  </div>`).join('');
+
+// Protocols preview (3 items)
+document.getElementById('protocols-preview-grid').innerHTML = protocolsData.slice(0,3).map((p,i)=>renderProtocolCard(p,i)).join('');
+
+// Protocols full
+document.getElementById('protocolos-full-grid').innerHTML = protocolsData.map((p,i)=>renderProtocolCard(p,i)).join('');
+
+// Testimonials
+document.getElementById('testi-grid').innerHTML = testiData.map((t,i)=>`
+  <div class="testi-card reveal" data-delay="${i+1}">
+    <p class="testi-text">"${t.text}"</p>
+    <div class="testi-footer">
+      <p class="testi-name">${t.name}</p>
+      <p class="testi-role">${t.role}</p>
+    </div>
+  </div>`).join('');
+
+// Condicoes
+document.getElementById('condicoes-list').innerHTML = condicoesData.map((c,i)=>`
+  <div class="condicao-row reveal" data-delay="${Math.min(i+1,6)}">
+    <button class="condicao-btn" onclick="toggleCondicao(${i})">
+      <div class="condicao-btn-left">
+        <h3 class="condicao-title">${c.title}</h3>
+        <p class="condicao-short">${c.short}</p>
+      </div>
+      <svg id="chevron-${i}" class="condicao-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="condicao-body" id="condicao-body-${i}">
+      <p class="condicao-detail">${c.detail}</p>
+      <div>
+        <p class="condicao-symptoms-label">Sintomas Comuns</p>
+        ${c.symptoms.map(s=>`
+          <div class="condicao-symptom">
+            <div class="condicao-symptom-dot"></div>
+            <span>${s}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`).join('');
+
+// Vitaminas rows
+document.getElementById('vitaminas-rows').innerHTML = vitaminasData.map((v,i)=>`
+  <div class="vitamina-row reveal" data-delay="${i+1}" onclick="showVitaminaDetail(${i})">
+    <div>
+      <p class="vitamina-row-label">${i===0?'Vitaminas & Minerais':'Complexo Vitamínico'}</p>
+      <h2 class="vitamina-row-name">${v.name}</h2>
+      <p class="vitamina-row-tag">${v.tagline}</p>
+    </div>
+    <svg class="vitamina-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </div>`).join('');
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+const pages = ['home','vitaminas','protocolos','condicoes','contato'];
+
+function navigate(page) {
+  pages.forEach(p => {
+    const el = document.getElementById('page-'+p);
+    if(el) el.classList.toggle('active', p===page);
+  });
+  // Update nav links
+  document.querySelectorAll('[data-page]').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+  window.scrollTo({top:0, behavior:'instant'});
+  setTimeout(initReveal, 50);
+}
+
+// ══════════════════════════════════════════════
+// NAVBAR SCROLL
+// ══════════════════════════════════════════════
+window.addEventListener('scroll', ()=>{
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+});
+
+// ══════════════════════════════════════════════
+// MOBILE MENU
+// ══════════════════════════════════════════════
+function toggleMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const iconMenu = document.getElementById('icon-menu');
+  const iconX = document.getElementById('icon-x');
+  const open = menu.classList.toggle('open');
+  iconMenu.style.display = open ? 'none' : 'inline-block';
+  iconX.style.display = open ? 'inline-block' : 'none';
+}
+
+// ══════════════════════════════════════════════
+// REVEAL ON SCROLL
+// ══════════════════════════════════════════════
+function initReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '-60px' });
+  els.forEach(el=>io.observe(el));
+}
+initReveal();
+
+// ══════════════════════════════════════════════
+// CONDICOES ACCORDION
+// ══════════════════════════════════════════════
+let openCondicao = null;
+function toggleCondicao(i) {
+  const body = document.getElementById('condicao-body-'+i);
+  const chevron = document.getElementById('chevron-'+i);
+  if(openCondicao !== null && openCondicao !== i) {
+    document.getElementById('condicao-body-'+openCondicao).classList.remove('open');
+    document.getElementById('chevron-'+openCondicao).classList.remove('open');
+  }
+  const isOpen = body.classList.toggle('open');
+  chevron.classList.toggle('open', isOpen);
+  openCondicao = isOpen ? i : null;
+}
+
+// ══════════════════════════════════════════════
+// VITAMINAS DETAIL
+// ══════════════════════════════════════════════
+function showVitaminaDetail(i) {
+  const v = vitaminasData[i];
+  document.getElementById('vd-name').textContent = v.name;
+  document.getElementById('vd-tagline').textContent = v.tagline;
+  document.getElementById('vd-intro').textContent = v.intro;
+  document.getElementById('vd-sections').innerHTML = v.sections.map(s=>`
+    <div class="vitamina-section-row">
+      <div class="vitamina-section-grid">
+        <p class="vitamina-section-title">${s.title}</p>
+        <p class="vitamina-section-content">${s.content}</p>
+      </div>
+    </div>`).join('');
+  document.getElementById('vitaminas-list-view').style.display = 'none';
+  document.getElementById('vitamina-detail-view').style.display = 'block';
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+function showVitaminasList() {
+  document.getElementById('vitaminas-list-view').style.display = 'block';
+  document.getElementById('vitamina-detail-view').style.display = 'none';
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+// ══════════════════════════════════════════════
+// CONTACT FORM
+// ══════════════════════════════════════════════
+function handleContactSubmit(e) {
+  e.preventDefault();
+  showToast('Mensagem enviada! Retornaremos em breve.');
+  e.target.reset();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
